@@ -1,0 +1,7 @@
+name: Dt request form
+description: 'Dt_request_form module - API learning!'
+type: module
+core: 8.x
+version: 1.0
+package: Examples
+configure: collect_phone.admin_settings

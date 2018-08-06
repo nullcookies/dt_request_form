@@ -1,0 +1,8 @@
+collect_phone.form:
+  path: '/dt_request_form'
+  defaults:
+    _title: 'Get Started'
+    # Подгружаем форму по неймспейсу.
+    _form: '\Drupal\dt_request_form\Form\CollectPhone'
+  requirements:
+    _permission: 'access content'

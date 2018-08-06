@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ */
+
+
+/**
+ * Implements hook_mail().
+ */
+function dt_request_form_mail($key, &$message, $params) {
+    $options = array(
+        'langcode' => $message['langcode'],
+    );
+
+    switch ($key) {
+        case 'submit_function':
+            \Drupal::logger('dt_request_form')->notice('Submit mail.',
+                []  );
+            $message['from'] = \Drupal::config('system.site')->get('mail');
+            $message['subject'] = t('Submit mail ', $options);
+            $message['body'][] = $params['message'];
+            break;
+    }
+}
