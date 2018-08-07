@@ -6,3 +6,4 @@ collect_phone.form:
     _form: '\Drupal\dt_request_form\Form\CollectPhone'
   requirements:
     _permission: 'access content'
+    _custom_access: '\Drupal\dt_request_form\Controller\RequestController::access'

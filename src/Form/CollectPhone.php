@@ -20,6 +20,16 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class CollectPhone extends FormBase {
 
+    public $user;
+    public $user_id;
+
+    public function __construct() {
+        $userCurrent = \Drupal::currentUser();
+        $this->user_id = $userCurrent->id();
+        $this->user = \Drupal\user\Entity\User::load($userCurrent->id());
+
+    }
+
   /**
    * То что ниже - это аннотация. Аннотации пишутся в комментариях и в них
    * объявляются различные данные. В данном случае указано, что документацию
@@ -47,6 +57,7 @@ class CollectPhone extends FormBase {
           '#title' => $this->t('Your Name'),
           '#description' => "Please enter your name",
           '#required' => TRUE,
+          '#default_value' =>  $this->user->getUsername()
       ];
 
       $form['organization'] = [
@@ -86,7 +97,9 @@ class CollectPhone extends FormBase {
 
     // Объявляем телефон.
     $form['contact_information']['phone_number'] = [
-          '#type' => 'textfield',
+          '#type' => 'tel',
+          '#size' => 15,
+          '#maxlength' => 128,
           '#title' => $this->t('Phone'),
           '#default_value' => $config->get('phone_number'),
         '#description' => "Please enter your Phone number",
@@ -98,6 +111,8 @@ class CollectPhone extends FormBase {
           // просто строку.
           '#title' => $this->t('E-mail'),
           '#description' => "Please enter your e-mail",
+          '#default_value' =>  $this->user->getEmail()
+
       ];
 
     // Предоставляет обёртку для одного или более Action элементов.
@@ -130,6 +145,11 @@ class CollectPhone extends FormBase {
               $form_state->setErrorByName('email', $this->t('Please use a valid email address.'));
           }
       }
+
+      if (!$this->validate_phone_number($form_state->getValue('phone_number'))) {
+          $form_state->setErrorByName('phone_number', $this->t('Invalid phone number.'));
+      }
+
   }
 
   /**
@@ -148,5 +168,21 @@ class CollectPhone extends FormBase {
       '@number' => $form_state->getValue('phone_number')
     ]));
   }
+
+    public function validate_phone_number($phone)
+    {
+        //Phone +42777
+        // Allow +, - and . in phone number
+        $filtered_phone_number = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
+        // Remove "-" from number
+        $phone_to_check = str_replace("-", "", $filtered_phone_number);
+        // Check the lenght of number
+        // This can be customized if you want phone number from a specific country
+        if (strlen($phone_to_check) < 5 || strlen($phone_to_check) > 14) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 }
