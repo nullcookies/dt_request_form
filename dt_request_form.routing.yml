@@ -7,3 +7,11 @@ collect_phone.form:
   requirements:
     _permission: 'access content'
     _custom_access: '\Drupal\dt_request_form\Controller\RequestController::access'
+
+collect_phone.admin_settings:
+  path: '/admin/config/dt_request_form'
+  defaults:
+    _form: '\Drupal\dt_request_form\Form\CollectEmailSettings'
+    _title: 'Settings for customize email form.'
+  requirements:
+    _permission: 'administer site configuration'

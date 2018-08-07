@@ -50,7 +50,7 @@ class CollectPhone extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Загружаем настройки модули из формы CollectPhoneSettings.
-    $config = \Drupal::config('dt_request_form.collect_phone.settings');
+    //$config = \Drupal::config('dt_request_form.collect_phone.settings');
 
       $form['name'] = [
           '#type' => 'textfield',
@@ -101,7 +101,6 @@ class CollectPhone extends FormBase {
           '#size' => 15,
           '#maxlength' => 128,
           '#title' => $this->t('Phone'),
-          '#default_value' => $config->get('phone_number'),
         '#description' => "Please enter your Phone number",
         '#required' => TRUE,
       ];
@@ -111,7 +110,7 @@ class CollectPhone extends FormBase {
           // просто строку.
           '#title' => $this->t('E-mail'),
           '#description' => "Please enter your e-mail",
-          '#default_value' =>  $this->user->getEmail()
+          '#default_value' =>  $this->user->getEmail(),
 
       ];
 

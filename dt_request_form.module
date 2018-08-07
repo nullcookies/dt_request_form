@@ -15,9 +15,11 @@ function dt_request_form_mail($key, &$message, $params) {
 
     switch ($key) {
         case 'submit_function':
-            \Drupal::logger('dt_request_form')->notice('Submit mail.',
+            $config = \Drupal::config('dt_request_form.collect_email.settings');
+            $from_mail  = (empty($config->get('email')) ? \Drupal::config('system.site')->get('mail') :  $config->get('email'));
+            \Drupal::logger('dt_request_form')->notice('Submit mail.' . $from_mail,
                 []  );
-            $message['from'] = \Drupal::config('system.site')->get('mail');
+            $message['from'] = $from_mail;
             $message['subject'] = t('Submit mail ', $options);
             $message['body'][] = $params['message'];
             break;
