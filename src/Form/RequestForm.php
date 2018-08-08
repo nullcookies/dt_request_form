@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\dt_request_form\Form\CollectPhone.
+ * Contains \Drupal\dt_request_form\Form\RequestForm.
  *
  * В комментарии выше указываем, что содержится в данном файле.
  */
@@ -13,12 +13,13 @@ namespace Drupal\dt_request_form\Form;
 // а также FormStateInterface который позволит работать с данными.
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Объявляем нашу форму, наследуясь от FormBase.
  * Название класса строго должно соответствовать названию файла.
  */
-class CollectPhone extends FormBase {
+class RequestForm extends FormBase {
 
     public $user;
     public $user_id;
@@ -40,7 +41,7 @@ class CollectPhone extends FormBase {
    * {@inheritdoc}.
    */
   public function getFormId() {
-    return 'collect_phone';
+    return 'dt_request_form';
   }
 
   /**
@@ -50,7 +51,6 @@ class CollectPhone extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Загружаем настройки модули из формы CollectPhoneSettings.
-    //$config = \Drupal::config('dt_request_form.collect_phone.settings');
 
       $form['name'] = [
           '#type' => 'textfield',
@@ -156,16 +156,36 @@ class CollectPhone extends FormBase {
    *
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-      $params['message'] = 'Thank you! We will contact you soon';
+    public function submitForm(array &$form, FormStateInterface $form_state)
+    {
+        $params['message'] = 'Thank you! We will contact you soon';
 
-    dt_request_form_mail('submit_function', $message, $params);
-    // Мы ничего не хотим делать с данными, просто выведем их в системном
-    // сообщении.
-    drupal_set_message($this->t($params['message'], [
-      '@name' => $form_state->getValue('name'),
-      '@number' => $form_state->getValue('phone_number')
-    ]));
+        $this->createRfSubmission($form_state);
+
+        dt_request_form_mail('submit_function', $message, $params);
+        // Мы ничего не хотим делать с данными, просто выведем их в системном
+        // сообщении.
+        drupal_set_message($this->t($params['message'], [
+            '@name' => $form_state->getValue('name'),
+            '@number' => $form_state->getValue('phone_number')
+        ]));
+    }
+
+  public function createRfSubmission($form_state){
+      $node = Node::create([
+          'type'        => 'rf_submissions',
+          'title'       => 'RF Submission',
+          'field_name'  => $form_state->getValue('name'),
+          'field_city'  => $form_state->getValue('city'),
+          'field_count_of_employees'  => $form_state->getValue('employees_select'),
+          /*'field_date'  => date("Y-m-d h:i:s"),
+          'field_date_sort'  => date("Y-m-d"),*/
+          'field_e_mail'  => $form_state->getValue('email'),
+          'field_organization'  => $form_state->getValue('organization'),
+          'field_phone'  => $form_state->getValue('phone_number'),
+
+      ]);
+      $node->save();
   }
 
     public function validate_phone_number($phone)

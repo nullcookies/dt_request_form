@@ -3,7 +3,7 @@ collect_phone.form:
   defaults:
     _title: 'Get Started'
     # Подгружаем форму по неймспейсу.
-    _form: '\Drupal\dt_request_form\Form\CollectPhone'
+    _form: '\Drupal\dt_request_form\Form\RequestForm'
   requirements:
     _permission: 'access content'
     _custom_access: '\Drupal\dt_request_form\Controller\RequestController::access'

@@ -4,4 +4,4 @@ type: module
 core: 8.x
 version: 1.0
 package: Examples
-configure: collect_phone.admin_settings
+configure: request_form.admin_settings
