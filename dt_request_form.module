@@ -28,31 +28,3 @@ function dt_request_form_mail($key, &$message, $params) {
             break;
     }
 }
-
-/*function dt_request_form_form_dt_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
-    $form['actions']['submit']['#submit'][]  = 'dt_request_form_submit_handler';
-}
-
-function dt_request_form_submit_handler($form, \Drupal\Core\Form\FormStateInterface $form_state) {
-    // Do your stuff
-    $node = Node::create([
-        'type'        => 'rf_submissions',
-        'title'       => 'RF Submission',
-        'field_name'  => $form_state->getValue('name'),
-        'field_city'  => $form_state->getValue('city'),
-        'field_count_of_employees'  => $form_state->getValue('employees_select'),
-        'field_e_mail'  => $form_state->getValue('email'),
-        'field_organization'  => $form_state->getValue('organization'),
-        'field_phone'  => $form_state->getValue('phone_number'),
-
-    ]);
-    $node->save();
-
-    $params['message'] = 'Thank you! We will contact you soon';
-
-    dt_request_form_mail('submit_function', $message, $params);
-    //$this->createRfSubmission($form_state);
-    // Мы ничего не хотим делать с данными, просто выведем их в системном
-    // сообщении.
-    drupal_set_message($params['message']);
-}*/
